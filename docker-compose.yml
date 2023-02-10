@@ -17,7 +17,7 @@ services:
     image: docker.io/bitnami/kafka:3.3
 
     ports:
-      - "4092:9092"
+      - "${BROKER_PORT:-9092}:9092"
 
     volumes:
       - "kafka_data:/bitnami"
@@ -33,7 +33,7 @@ services:
     image: provectuslabs/kafka-ui
     container_name: kafka-ui
     ports:
-      - "4080:8080"
+      - "${SERVICE_PORT:-8080}:8080"
     restart: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=kafka-broker
@@ -42,5 +42,6 @@ services:
 volumes:
   zookeeper_data:
     driver: local
+
   kafka_data:
     driver: local

@@ -13,6 +13,9 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
+    networks:
+      - kafka-network
+
   kafka-broker:
     image: docker.io/bitnami/kafka:3.3
 
@@ -29,6 +32,9 @@ services:
     depends_on:
       - zookeeper
 
+    networks:
+      - kafka-network
+
   kafka-ui:
     image: provectuslabs/kafka-ui
     container_name: kafka-ui
@@ -39,9 +45,20 @@ services:
       - KAFKA_CLUSTERS_0_NAME=kafka-broker
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-broker:9092
 
+    depends_on:
+      - kafka-broker
+
+    networks:
+      - kafka-network
+
 volumes:
   zookeeper_data:
     driver: local
 
   kafka_data:
     driver: local
+
+
+networks:
+  kafka-network:
+    driver: bridge
